@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNet.Identity
+<div class="col-md-4" data-animate="fadeInDown" dir="rtl">
+    <ul class="menu">
+
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new {id = "logoutForm", @class = "navbar-left"}))
+            {
+                @Html.AntiForgeryToken()
+
+
+                <li>
+                    @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage",
+                        routeValues: null, htmlAttributes: new {title = "Manage"})
+                </li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">خروج</a></li>
+
+            }
+        }
+        else
+        {
+
+            <li>
+
+                <a href="#" data-toggle="modal" data-target="#login-modal"> وروود </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Register", "Account")">عضویت</a>
+            </li>
+
+
+        }
+
+
+        <li>
+            <a href="contact.html">Contact</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Recentview", "products")">آخرین کالاهای بازدید شده</a>
+        </li>
+    </ul>
+</div>
+
+@*@Html.Action("Login_Impact", "Account")*@
+@*@Html.RenderPartial("login_impact", Online_Store.Models.LoginViewModel fuck)*@
+@*@{ Html.RenderAction("Login_Impact", "Account"); }*@

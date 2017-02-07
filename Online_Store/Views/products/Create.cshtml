@@ -1,0 +1,183 @@
+﻿@using Online_Store.Models
+@model Online_Store.Models.product
+
+@{
+    ViewBag.Title = "Create";
+
+}
+
+
+<ul class="breadcrumb">
+    <li>
+        <a href="#">Home</a>
+    </li>
+    <li>
+        <a href="#">Product</a>
+    </li>
+    <li>Create</li>
+</ul>
+
+@using (Html.BeginForm("Create", "products", FormMethod.Post, new { enctype = "multipart/form-data" })) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>product</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.name, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Desciption, htmlAttributes: new { @class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Desciption, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Desciption, "", new { @class = "text-danger" })
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.price, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.date, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.date, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.date, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.stock, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.stock, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.stock, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.typeID, "typeID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("typeID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.typeID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.catgorieID, "catgorieID", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("catgorieID", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.catgorieID, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.type, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.type, htmlAttributes: new { @class = "form-control", @onchange = "FillCity()" })
+                @Html.ValidationMessageFor(model => model.type, "", new {@class = "text-danger"})
+            </div>
+        </div>*@
+        @*<div class="col-md-6 col-sm-6">
+            <div class="products-sort-by">
+                <strong>نوع</strong>
+                <select name="sort-by" class="form-control" id="catgorie">
+                    <option></option>
+                    <option></option>
+
+                </select>
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.type, new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.type,
+new SelectList(ViewBag.typeenumm,"TypeId","TypeName"),
+                    "انتخاب نوع",
+                    new {@class = "form-control", @onchange = "FillCity()"})
+                @Html.ValidationMessageFor(m => m.type, "", new {@class = "text-danger"})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.catgorie, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.catgorie,
+       new SelectList(Enumerable.Empty<SelectListItem>(), "CatId", "CatName"),
+              "انتخاب دسته بندی",
+              new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.catgorie, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.catgorie, htmlAttributes: new {@class = "control-label col-md-2"})
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.catgorie, htmlAttributes: new {@class = "form-control"})
+                @Html.ValidationMessageFor(model => model.catgorie, "", new {@class = "text-danger"})
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.Label("عکس انتخاب شده", new { @class = "control-label col-sm-2" })
+            <div class="col-sm-10">
+                <input type="file" name="files"
+                       multiple="multiple" accept=".jpg, .png, .gif" />
+                
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+                <div style="color:red">
+                    @ViewBag.error
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+@section scripts {
+    <script>
+
+        //function FillCity() {
+        //    var stateId = $('#type').val();
+        //                $("#catgorie").append(
+        //                    $('<option></option>').val("fuccccc","harki").html("khoooooo","nashod"));
+                   
+        //}
+        function FillCity() {
+            var stateId = $('#type').val();
+            $.ajax({
+                url: '/products/FillCity',
+                type: "GET",
+                dataType: "JSON",
+                data: { type: stateId },
+                success: function (cities) {
+                    $("#catgorie").html(""); // clear before appending new list 
+                    $.each(cities, function (i, cat) {
+                        $("#catgorie").append(
+                            $('<option></option>').val(cat.CatId).html(cat.CatName));
+                    });
+                }
+            });
+        }
+        CKEDITOR.replace('Desciption');
+        
+    </script>
+}

@@ -1,0 +1,375 @@
+﻿@model Online_Store.Models.product
+@using Newtonsoft.Json
+@using Online_Store.Models;
+
+@{
+    ViewBag.Title = "جزئیات";
+    
+}
+@{
+    var recentProductList = ViewData["RecentProductList"] as List<RecentProduct>;
+    var img = new productImage();
+    ApplicationDbContext db = new ApplicationDbContext();
+
+    // Capture all cookie names into a string array.
+    //String[] arr1 = MyCookieColl.AllKeys;
+    //HttpCookie myCookie2 = new HttpCookie("recentViewed");
+    //myCookie2 = Request.Cookies["recentViewed"];
+
+    HttpCookie myCookie = new HttpCookie("recentViewed");
+    var cooki_content = Request.Cookies["recentViewed"].Value.Split('&').ToList();
+    cooki_content.Reverse();
+    int lenghtCo = cooki_content.Count;
+    if (lenghtCo > 4)
+    {
+        cooki_content.RemoveAt(4);
+        myCookie.Value = string.Join("&", cooki_content);
+        Response.Cookies.Add(myCookie);
+    }
+    
+    var plusPrice = Model.price + 100 ;
+    var sumPrice = Model.price - 100;
+    var prdRelationPrice = db.products.Where(z => z.price < plusPrice || z.price > sumPrice && z.type == Model.type).ToList();
+    
+}
+@*@for (int i = 0; i < arr1.Length; i++)
+{
+    MyCookie = MyCookieColl[arr1[i]];
+    <h2> @MyCookie.Value</h2>
+    //<h2> @MyCookie.Expires </h2> 
+    //<h2> @MyCookie.Secure</h2>
+}
+
+<h1> @Response.Cookies["UserSettings"].Values</h1> <br/>
+ @if (hck != null)
+ {
+
+     <h2>
+          @hck.Values["Font"]
+          @hck.Values["Color"]
+     </h2>
+ }*@
+
+@*@foreach (var item in Response.Cookies["product"])
+{
+
+}*@
+
+<div class="col-md-12">
+    <ul class="breadcrumb" id="list">
+        <li>
+            <a href="@Url.Action("Index", "Home")">خانه</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Index", "Products")">محصولات</a>
+        </li>
+        <li> @Model.name </li>
+        <li>
+            @Html.ActionLink("ویرایش", "Edit","products", new {id = Model.productID}, new {@class = "btn btn-primary"})
+        </li>
+        <li>
+            @Html.ActionLink("برگشتن به لیست محصولات", "Index","products", new { @class = "btn btn-primary" })
+        </li>
+        @*<ul class="breadcrumb pull-right">
+                <li>
+                    <a href="@Url.Action("Index", "Products")">محصولات</a>
+                </li>
+                <li>
+                    <a href="@Url.Action("Index", "Products")">محصولات</a>
+                </li>
+            </ul>*@
+
+    </ul>
+
+
+</div>
+
+
+<div class="col-md-9">
+
+    <div class="row" id="productMain">
+        <div class="col-sm-6">
+            <div id="mainImage">
+                <img src="~/saveImages/@ViewBag.id@ViewBag.extension" alt="" class="img-responsive" width="397" height="598">
+            </div>
+
+            <div class="ribbon sale">
+                <div class="theribbon">SALE</div>
+                <div class="ribbon-background"></div>
+            </div>
+            <!-- /.ribbon -->
+
+            <div class="ribbon new">
+                <div class="theribbon">NEW</div>
+                <div class="ribbon-background"></div>
+            </div>
+            <!-- /.ribbon -->
+
+        </div>
+        <div class="col-sm-6">
+            <div class="box">
+                <h1 class="text-center">@Model.name</h1>
+                <p class="goToDescription">
+                    <a href="#details" class="scroll-to">برای دیدن بقیه مشخصات به پائین بیایید </a>
+                </p>
+                <p class="price"> قیمت : @Model.price</p>
+                @*@Html.ActionLink("Add tocart", "AddToCart","ShoppingCart", new { id = Model.productID }, "")*@
+                <p class="text-center buttons">
+                    <a href="@Url.Action("OrderNow", "ShoppingCart", new { id = Model.productID }, "")" class="btn btn-primary">
+                        <i class="fa fa-shopping-cart"></i> اضافه کردن به سبد خرید
+                    </a>
+                    <br /><br />
+                    <a href="basket.html" class="btn btn-default"><i class="fa fa-heart"></i> اضافه کردن به لیست کالای مورد علاقه شما</a>
+                </p>
+
+
+            </div>
+            <div class="row" id="thumbs">
+                @{
+                    foreach (var item in @ViewBag.allpic)
+                    {
+
+                        <div class="col-xs-4">
+                            <a href="~/saveImages/@item@ViewBag.extension" class="thumb">
+                                <img src="~/saveImages/@item@ViewBag.extension" alt="" class="img-responsive">
+                            </a>
+                        </div>
+
+                    }
+
+                }
+            </div>
+        </div>
+
+    </div>
+    
+
+    <div class="box" id="details" dir="rtl">
+        <p>
+            <h4>جزئیات محصول</h4>
+        <p>@Html.Raw(Model.Desciption)</p>
+
+        <h4>تعداد در انبار :</h4>
+        <ul>
+            <li> @Model.stock </li>
+
+        </ul>
+        <h4>دیگر مشخصلات :</h4>
+        <ul>
+            @*<li> نوع : @Model.type </li>*@
+            <li> نوع : @db.Types.Where(z => z.TypeId == Model.type).FirstOrDefault().TypeName </li>
+            <li>دسته بندی : @db.Cats.Where(z => z.CatId == Model.catgorie).FirstOrDefault().CatName </li>
+        </ul>
+
+        <blockquote>
+            <p>
+                <em>توضیحات اضافه</em>
+            </p>
+        </blockquote>
+
+        <hr>
+        <div class="social">
+            <h4>به دوستانتان نشان دهید</h4>
+            <p>
+                <a href="#" class="external facebook" data-animate-hover="pulse"><i class="fa fa-facebook"></i></a>
+                <a href="#" class="external gplus" data-animate-hover="pulse"><i class="fa fa-google-plus"></i></a>
+                <a href="#" class="external twitter" data-animate-hover="pulse"><i class="fa fa-twitter"></i></a>
+                <a href="#" class="email" data-animate-hover="pulse"><i class="fa fa-envelope"></i></a>
+            </p>
+        </div>
+    </div>
+<div id="content">
+    <div id="hot">
+        <div class="box">
+            <div class="container">
+                <div class="col-md-12">
+                    <h2> محصولات مرتبط </h2>
+                </div>
+            </div>
+        </div>
+            
+                <div class="product-slider">
+                    @if (prdRelationPrice == null)
+                    {
+                        <p> محصول مرتبطی وجود ندارد </p>
+                    }
+                    else
+                    {
+                        foreach (var RelatedPrd in prdRelationPrice)
+                        {
+
+
+                            <div class="item">
+                                <div class="product">
+                                    <div class="flip-container">
+                                        <div class="flipper">
+                                            <div class="front">
+                                                <a href="@Url.Action("Details", "products", new {id = RelatedPrd.productID})">
+                                                    <img src="/saveImages/@db.productImage.Where(x => x.productId == RelatedPrd.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == RelatedPrd.productID).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                                </a>
+                                            </div>
+                                            <div class="back">
+                                                <a href="detail.html">
+                                                    <img src="~/saveImages/@db.productImage.Where(z => z.productId == RelatedPrd.productID).OrderBy(p => p.Id).Skip(1).FirstOrDefault().Id@db.productImage.Where(z => z.productId == RelatedPrd.productID).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <a href="detail.html" class="invisible">
+                                        <img src="~/saveImages/@db.productImage.Where(x => x.productId == RelatedPrd.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == RelatedPrd.productID).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                    </a>
+                                    <div class="text">
+                                        <h3>@db.products.Where(z => z.productID == RelatedPrd.productID).FirstOrDefault().name</h3>
+                                        <p class="price">@db.products.Where(z => z.productID == RelatedPrd.productID).FirstOrDefault().price</p>
+                                    </div>
+                                </div>
+                                <!-- /.product -->
+                            </div>
+
+
+                        }
+                    }
+
+                
+            </div>
+            <!-- /.product -->
+        </div>
+   
+
+
+
+        <div class="row same-height-row">
+            <div class="col-md-3 col-sm-2">
+                <div class="box same-height">
+                    <h3>آخرین محصولات بازدید شده</h3>
+                </div>
+            </div>
+
+            @foreach (var recentProduct in cooki_content)
+            {
+                var toint = Convert.ToInt32(recentProduct);
+                <div class="col-md-2 col-sm-2">
+                    <div class="product same-height">
+                        <div class="flip-container">
+                            <div class="flipper">
+                                <div class="front">
+                                    <a href="@Url.Action("Details", "products", new {id = toint})">
+                                        <img src="/saveImages/@db.productImage.Where(x => x.productId == toint).FirstOrDefault().Id@db.productImage.Where(x => x.productId == toint).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                    </a>
+                                </div>
+                                <div class="back">
+                                    <a href="@Url.Action("Details", "products", new {id = toint})">
+                                        <img src="~/saveImages/@db.productImage.Where(z => z.productId == toint).OrderBy(p => p.Id).Skip(1).FirstOrDefault().Id@db.productImage.Where(z => z.productId == toint).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="@Url.Action("Details", "products", new {id = toint})" class="invisible">
+                            <img src="~/saveImages/@db.productImage.Where(x => x.productId == toint).FirstOrDefault().Id@db.productImage.Where(x => x.productId == toint).FirstOrDefault().Extension" alt="" class="img-responsive">
+                        </a>
+                        <div class="text">
+                            <h3>@db.products.Where(z => z.productID == toint).FirstOrDefault().name</h3>
+                            <p class="price">@db.products.Where(z => z.productID == toint).FirstOrDefault().price</p>
+                        </div>
+
+                    </div>
+
+                    <!-- /.product -->
+                </div>
+            }
+
+
+
+            @*@Html.Hidden(localforit);*@
+
+        </div>
+
+
+    </div>
+
+                <div class="thumbnail" id="comments" style="clear: both; overflow: hidden; margin-top: 20px">
+                    <div id="List" style="overflow: hidden">
+                        @Html.Action("Showcomment","products")
+                    </div>
+                    <hr class="clearfix" />
+                    <h4>ثبت نظر</h4>
+                    <hr />
+                    @Html.Action("InsertComment","products")
+                </div>
+
+
+
+            </div>
+<!-- /.col-md-9 -->
+@Html.Partial("_MenuAndFillter")
+<!-- /.container -->
+<!-- /#content -->
+
+@section scripts
+{
+<link href="~/Content/js/jqery-ui/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Content/js/jqery-ui/jquery-ui.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+    <script>
+        $("#dis").addClass("disabledbutton");
+        $("#dis2").addClass("disabledbutton");
+        function Success() {
+            $('#Name').val('');
+            $('#Text').val('');
+        }
+
+        function NestedComment(ParentID) {
+            $.ajax({
+                url: "/products/InsertComment",
+                data: { ParentID: ParentID },
+                type: "Get"
+            }).done(function (result) {
+                $('#Comment_' + ParentID).append(result);
+            });
+        }
+
+        //////////////// localstorege
+
+        @*var key2 = @Html.Raw(JsonConvert.SerializeObject(Model.name, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+        var value2 = @Html.Raw(JsonConvert.SerializeObject(Model.productID, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+    if (typeof(Storage) !== "undefined") {
+        //// Store
+        //localStorage.setItem("product", value);
+        //// Retrieve
+        //document.getElementById("key").innerHTML = localStorage.getItem("product");
+        //var value = [];
+        //value[value.length] = value2;   
+        //localStorage.setItem("product", JSON.stringify(value));
+        //var test = JSON.parse(localStorage.getItem("product"));
+        //document.getElementById("keyyy").innerHTML = test; 
+        localStorage.setItem(key2, value2);
+        //var storage = window[local + 'Storage'];
+
+        // remove the rows in the specified table before we start
+       // $(table + " > tbody > tr").remove();
+
+        // loop through the existing keys in the storage and add them to the TBODY element as rows
+        for (var i = 0; i < localStorage.length; i++) {
+            var key = localStorage.key(i);
+            var value = localStorage.getItem(key);
+            //Request.Cookies["product"] = value;
+            //localStorage.clear();
+            $('#myVar').val(value);    
+            $('#pcode').val(value);  
+            $('#keyyy').append(key);
+            $('#valueeee').append(value);
+        //for(var i in localStorage)
+        //{
+        //    console.log(localStorage[i]);
+        //}
+            
+            //document.getElementById("keyyy").innerHTML = value;
+        }
+    } else {
+        $('#keyyy').html("مرورگر شما قدیمی است");
+    }*@
+
+    </script>
+    @*<script src="~/Scripts/comments.js"></script>*@
+}

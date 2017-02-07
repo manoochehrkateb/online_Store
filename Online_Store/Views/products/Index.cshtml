@@ -1,0 +1,161 @@
+﻿@using PagedList;
+@using Online_Store.Models;
+@using PagedList.Mvc;
+@using System.Linq;
+
+@model IPagedList<Online_Store.Models.product>
+
+@{
+    ViewBag.Title = "محصولات";
+    product pr = new product();
+    ApplicationDbContext db = new ApplicationDbContext();
+
+}
+@*<div class="navbar-buttons">
+
+
+    /.nav-collapse 
+
+    <div class="navbar-collapse collapse right" id="search-not-mobile">
+        <button type="button" class="btn navbar-btn btn-primary" data-toggle="collapse" data-target="#search">
+            <span class="sr-only">Toggle search</span>
+            <i class="fa fa-search"></i>
+        </button>
+    </div>
+
+</div>
+
+
+<input type="text" id="srch">
+<button type="submit" class="btn btn-primary" onclick="seachFunc()"><i class="fa fa-search"></i></button>*@
+
+
+
+<h3 class="madar">
+
+</h3>
+<h3 class="madar2">
+   
+</h3>
+<h3 class="madar3">
+   
+</h3>
+<h2 dir="rtl">صفحه اصلی</h2>
+@if (User.IsInRole("Admin"))
+{
+    @Html.ActionLink("ایجاد محصول جدید", "Create", "", new { @class = "btn btn-success pull-right" })
+}
+<br/>
+<br/>
+<br>
+<div id="all">
+
+    <div id="content">
+        <div class="container">
+
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">خانه</a>
+                    </li>
+                    <li>همه محصولات</li>
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="box" dir="rtl">
+                    <h1>تمام محصولات فروشگاه</h1>
+                    <p>در این صفحه تمام محصولات فروشگاه نمایش داده میشود</p>
+                </div>
+                <div class="box info-bar">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 products-showing">
+                            نمایش <strong>@Model.Count</strong> از <strong>@db.products.Count()</strong> محصول
+                        </div>
+
+                        <div class="col-sm-12 col-md-8  products-number-sort">
+                            <div class="row">
+                                <form class="form-inline">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="products-number">
+                                            <strong>نمایش</strong> <a href="@Url.Action("Index", "products", new {pageSize = 6})" class="btn btn-default btn-sm btn-primary">
+                                                6
+                                            </a> <a href="@Url.Action("Index", "products", new {pageSize = 12})" class="btn btn-default btn-sm">
+                                                12
+                                            </a> <a href="@Url.Action("Index", "products", new {pageSize = db.products.Count()})" class="btn btn-default btn-sm">همه</a> محصولات
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="products-sort-by">
+                                            <strong>به ترتیب</strong>
+                                            @*<select name="sort-by" class="form-control" id="janeshin">
+                                                <option value="1"> قیمت </option>
+                                                <option value="2"> اسم </option>
+                                            </select>*@
+                                            <a href="@Url.Action("Index", "products", new {sortBy = 2})" class="btn btn-default btn-sm"> اسم </a>
+                                            <a href="@Url.Action("Index", "products", new { sortBy = 1 })" class="btn btn-default btn-sm"> قیمت </a> 
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @Html.Partial("_ShowProducts",Model)
+
+            </div>
+            <!-- /.col-md-9 -->
+
+                <!-- *** MENUS AND FILTERS ***
+        _________________________________________________________ -->
+@Html.Partial("_MenuAndFillter")
+
+                <!-- *** MENUS AND FILTERS END *** -->
+
+         
+
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->
+    </div>
+</div>
+@section scripts {
+
+<script src="~/Scripts/comments.js"></script>
+<link href="~/Content/js/jqery-ui/jquery-ui.min.css" rel="stylesheet" />
+<script src="~/Content/js/jqery-ui/jquery-ui.min.js"></script>
+<link href="~/Content/Site.css" rel="stylesheet" />
+    <script>
+        $("#dis").addClass("disabledbutton");
+        $("#dis2").addClass("disabledbutton");
+
+
+    </script>
+@*<script>
+    var seach = $('#srch').val();
+
+    function seachFunc() {
+        $.ajax({
+            url: '/Home/search',
+            type: "POST",
+            dataType: "JSON",
+            data: { search: seach },
+            success: window.location.href = "~/searchResult.cshtml" window.location.href = "@Url.Action("search","Home")"
+
+
+        });
+    }
+    $(document)
+    .ready(function() {
+            $('#srch')
+                .autocomplete({
+                    source: '@Url.Action("search","Home")'
+                });
+
+        });
+</script>*@
+
+}

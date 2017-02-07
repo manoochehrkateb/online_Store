@@ -1,0 +1,157 @@
+﻿@using Online_Store.Models
+@model Online_Store.Models.PaymentMethod
+
+@{
+    ViewBag.Title = "روش پرداخت";
+}
+
+<h2>PaymentMethod</h2>
+
+@using (Html.BeginForm("PaymentMethod", "ShoppingCart", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div id="content">
+        <div class="container">
+
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>تسویه - روش پرداخت </li>
+                </ul>
+            </div>
+
+            <div class="col-md-9" id="checkout">
+
+                <div class="box">
+
+                    <h1>پرداخت - روش پرداخت</h1>
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <a href="@Url.Action("Proceed","ShoppingCart")"><i class="fa fa-map-marker"></i><br>آدرس</a>
+                        </li>
+                        <li>
+                            <a href="@Url.Action("Delivery","ShoppingCart",new {id = Model.OrderId})"><i class="fa fa-truck"></i><br>روش ارسال</a>
+                        </li>
+                        <li class="active">
+                            <a href="#"><i class="fa fa-money"></i><br>روش پرداخت</a>
+                        </li>
+                        <li class="disabled">
+                            <a href="#"><i class="fa fa-eye"></i><br>خلاصه پرداخت</a>
+                        </li>
+                    </ul>
+
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="box shipping-method">
+
+                                    <h4> پرداخت حضوری به پیک </h4>
+
+                                    <p>برای مشتریان تهرانی.</p>
+
+                                    <div class="box-footer text-center">
+                                        @Html.RadioButtonFor(model => model.PaymentEnum, Payment.peyk)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="box shipping-method">
+
+                                    <h4> فیش بانکی </h4>
+
+                                    <p> مخصوص اون دسته از کاربرانی که قسط پرداخت به صورت فیش بانکی را دارند </p>
+
+                                    <div class="box-footer text-center">
+                                     
+                                        @Html.RadioButtonFor(model => model.PaymentEnum, Payment.fishe)
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="box shipping-method">
+
+                                    <h4> درگاه آنلاین بانک ملت </h4>
+
+                                    <p> به صورت آنلاین و با داشتن کارت اعتباری از تمام بانک ها </p>
+
+                                    <div class="box-footer text-center">
+
+                                        @Html.RadioButtonFor(model => model.PaymentEnum, Payment.melat)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                        @Html.HiddenFor(model => model.OrderId)
+                    </div>
+                    <!-- /.content -->
+
+                    <div class="box-footer">
+                        <div class="pull-left">
+                            <a href="basket.html" class="btn btn-default"><i class="fa fa-chevron-left"></i>برگشت به مشخصات</a>
+                        </div>
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-primary">
+                                روش پرداخت<i class="fa fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+
+
+            </div>
+            <!-- /.col-md-9 -->
+
+            <div class="col-md-3">
+
+
+                <div class="box" id="order-summary">
+                    <div class="box-header">
+                        <h3>خلاصه سفارش</h3>
+                    </div>
+                    <p class="text-muted">ارسال و بقیه چیزها حساب میشود</p>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>مجوعه سفارش</td>
+                                    <th>$446.00</th>
+                                </tr>
+                                <tr>
+                                    <td>ارسال</td>
+                                    <th>@{
+                                            decimal s = (decimal)Session["delivery"];
+                                        }
+                                  @s
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>مالیات</td>
+                                    <th>$0.00</th>
+                                </tr>
+                                <tr class="total">
+                                    <td>مجموع</td>
+                                    <th>@ViewBag.total</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.col-md-3 -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#content -->
+}

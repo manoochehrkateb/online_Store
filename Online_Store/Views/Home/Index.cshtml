@@ -1,0 +1,210 @@
+﻿@model IEnumerable<Online_Store.Models.product>
+@using Online_Store.Models;
+@{
+    ViewBag.Title = "صفحه اصلی";
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+
+@*@using (Html.BeginForm("Index","Home",FormMethod.Get))
+{
+    <p>
+        Title: @Html.TextBox("search") <br />
+        <input type="submit" value="Filter" />
+    </p>
+}*@
+
+
+
+    <div class="container">
+        <div class="col-md-12">
+            <div id="main-slider">
+                <div class="item">
+                    <img src="img/main-slider1.jpg" alt="" class="img-responsive">
+                </div>
+                <div class="item">
+                    <img class="img-responsive" src="img/main-slider2.jpg" alt="">
+                </div>
+                <div class="item">
+                    <img class="img-responsive" src="img/main-slider3.jpg" alt="">
+                </div>
+                <div class="item">
+                    <img class="img-responsive" src="img/main-slider4.jpg" alt="">
+                </div>
+            </div>
+            <!-- /#main-slider -->
+        </div>
+    </div>
+
+    <!-- *** ADVANTAGES HOMEPAGE ***
+    _________________________________________________________ -->
+    <div id="advantages">
+
+        <div class="container">
+            <div class="same-height-row">
+                <div class="col-sm-4">
+                    <div class="box same-height clickable">
+                        <div class="icon">
+                            <i class="fa fa-heart"></i>
+                        </div>
+
+                        <h3><a href="#">ما مشتری هایمان را دوست داریم</a></h3>
+                        <p>ما میدونیم که باید بهترین سرویس خودمان را ارائه دهیم</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="box same-height clickable">
+                        <div class="icon">
+                            <i class="fa fa-tags"></i>
+                        </div>
+
+                        <h3><a href="@Url.Action("Index", "products", new { sortBy = 1 })">بهترین قیمت ها</a></h3>
+                        <p>شما میتونید بهترین قیمت ها مربوط به خودتون را اینجا پیدا کنید</p>
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="box same-height clickable">
+                        <div class="icon">
+                            <i class="fa fa-thumbs-up"></i>
+                        </div>
+
+                        <h3><a href="#">100% گارانتی رضایت</a></h3>
+                        <p>تا 3 ماه هر چیزی را که راضی نبودید برمیگردونیم</p>
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /#advantages -->
+    <!-- *** ADVANTAGES END *** -->
+    <!-- *** HOT PRODUCT SLIDESHOW ***
+    _________________________________________________________ -->
+    <div id="hot">
+
+        <div class="box">
+            <div class="container">
+                <div class="col-md-12">
+                    <h2>جدید ترین محصولات</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="product-slider">
+                @foreach (var item in Model)
+                {
+
+
+                    <div class="item">
+                        <div class="product">
+                            <div class="flip-container">
+                                <div class="flipper">
+                                    <div class="front">
+                                        <a href="@Url.Action("Details","products",new{id = item.productID})">
+                                            <img src="~/saveImages/@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Extension"
+                                                  alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                    <div class="back">
+                                        <a href="@Url.Action("Details","products",new{id = item.productID})">
+                                            <img src="~/saveImages/@db.productImage.Where(z => z.productId == item.productID).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Id@db.productImage.Where(z => z.productId == item.productID).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Extension"
+                                                 alt="" class="img-responsive">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <a href="@Url.Action("Details","products",new{id = item.productID})" class="invisible">
+                                <img src="~/saveImages/@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Extension"
+                                     alt="" class="img-responsive">
+                            </a>
+                            <div class="text">
+                                <h3><a href="@Url.Action("Details","products",new{id = item.productID})">@item.name</a>
+                                </h3>
+                                <p class="price">@item.price</p>
+                            </div>
+                            <!-- /.text -->
+                        </div>
+                        <!-- /.product -->
+                    </div>
+
+
+                }
+            </div>
+            <!-- /.product-slider -->
+        </div>
+        <!-- /.container -->
+
+    </div>
+    <!-- /#hot -->
+    <!-- *** HOT END *** -->
+
+    <!-- *** BLOG HOMEPAGE ***
+    _________________________________________________________ -->
+
+    @*<div class="box text-center" data-animate="fadeInUp">
+        <div class="container">
+            <div class="col-md-12">
+                <h3 class="text-uppercase">From our blog</h3>
+
+                <p class="lead">
+                    What's new in the world of fashion? <a href="blog.html">Check our blog!</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <div class="col-md-12" data-animate="fadeInUp">
+
+            <div id="blog-homepage" class="row">
+                <div class="col-sm-6">
+                    <div class="post">
+                        <h4><a href="post.html">Fashion now</a></h4>
+                        <p class="author-category">
+                            By <a href="#">John Slim</a> in <a href="">Fashion and style</a>
+                        </p>
+                        <hr>
+                        <p class="intro">
+                            Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
+                            ultricies mi vitae est. Mauris placerat eleifend leo.
+                        </p>
+                        <p class="read-more">
+                            <a href="post.html" class="btn btn-primary">Continue reading</a>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="post">
+                        <h4><a href="post.html">Who is who - example blog post</a></h4>
+                        <p class="author-category">
+                            By <a href="#">John Slim</a> in <a href="">About Minimal</a>
+                        </p>
+                        <hr>
+                        <p class="intro">
+                            Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
+                            ultricies mi vitae est. Mauris placerat eleifend leo.
+                        </p>
+                        <p class="read-more">
+                            <a href="post.html" class="btn btn-primary">Continue reading</a>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /#blog-homepage -->
+        </div>
+    </div>
+    <!-- /.container -->
+    <!-- *** BLOG HOMEPAGE END *** -->*@
+
+
+</div>
+<!-- /#content -->

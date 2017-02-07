@@ -1,0 +1,67 @@
+﻿@using Online_Store.Models
+@model IEnumerable<Online_Store.Models.CommentAjax>
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+@foreach (var item in Model)
+{
+    <div class="media">
+        <div class="media-right">
+            <a href="#">
+                <img alt="64x64" class="media-object" style="width: 64px; height: 64px;" src="~/Content/anonymous_user_profile.jpg" data-holder-rendered="true">
+            </a>
+        </div>
+        <div class="media-body" id="Comment_@(item.CommentID)" style="padding: 3px;width: 100%">
+            <h4 class="media-heading">
+                @item.Name
+                <label class="badge pull-left" style="font-weight: normal">@item.Date.ToString("dddd, dd MMMM yyyy - HH:mm")</label>
+            </h4>
+            <div class="clearfix">
+                @item.Text
+            </div>
+            @{
+                var childCM = db.CommentAjaxes.Where(t => t.ParentID == item.CommentID).ToList();
+                
+            }
+                @foreach (var textChild in childCM)
+                {
+                    <div class="media-body" id="Comment_@(textChild.CommentID)" style="padding: 3px;width: 100%">
+                        <div class="media-right">
+                            <a href="#">
+                                <img alt="64x64" class="media-object" style="width: 64px; height: 64px;" src="~/Content/anonymous_user_profile.jpg" data-holder-rendered="true">
+                            </a>
+                        </div>
+                        <h4 class="media-heading">
+                            @textChild.Name
+                            <label class="badge pull-left" style="font-weight: normal">@textChild.Date.ToString("dddd, dd MMMM yyyy - HH:mm")</label>
+                        </h4>
+                        <div class="clearfix">
+                            @textChild.Text
+                        </div>
+                    </div>
+                }
+
+                        <a class="btn btn-xs pull-left btn-primary" onclick="NestedComment(@item.CommentID)" style="clear: both">ارسال پاسخ</a>
+
+                        @foreach (var child in item.CommentAjax1.ToList())
+            {
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img alt="64x64" class="media-object" style="width: 64px; height: 64px;" src="~/Content/anonymous_user_profile.jpg" data-holder-rendered="true">
+                                    </a>
+                                </div>
+                                <div class="media-body" style="padding: 3px;width: 100%">
+                                    <h4 class="media-heading">@child.Name</h4>
+                                    <div class="clearfix">
+                                        @child.Text
+                                    </div>
+
+                                </div>
+                            </div>
+            }
+                    </div>
+    </div>
+    <hr class="clearfix" />
+}
+

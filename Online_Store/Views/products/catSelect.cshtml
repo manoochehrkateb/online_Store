@@ -1,0 +1,287 @@
+﻿@using PagedList;
+@using Online_Store.Models;
+@using PagedList.Mvc;
+@using System.Linq;
+
+@model IPagedList<Online_Store.Models.product>
+
+@{
+    ViewBag.Title = "آیتم";
+    product pr = new product();
+    ApplicationDbContext db = new ApplicationDbContext();
+
+}
+
+
+<p>
+    @Html.ActionLink("ایجاد محصول جدید", "Create")
+</p>
+<div id="all">
+
+    <div id="content">
+        <div class="container">
+
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>همه محصولات</li>
+                </ul>
+            </div>
+
+            <div class="col-md-9">
+
+                <div class="box" dir="rtl">
+                    <h1> @ViewBag.TopicName </h1>
+                    <p> در این صفحه تمام محصولات گروه " @ViewBag.TopicName " نمایش داده میشود </p>
+                </div>
+                <div class="box info-bar">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-4 products-showing">
+                            نمایش <strong> محصول @Model.Count</strong> از <strong>@db.products.Count()</strong> محصول
+                        </div>
+
+                        <div class="col-sm-12 col-md-8  products-number-sort">
+                            <div class="row">
+                                <form class="form-inline">
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="products-number">
+                                            <strong>Show</strong> <a href="@Url.Action("Index", "products", new {pageSize = 6})" class="btn btn-default btn-sm btn-primary">
+                                                6
+                                            </a> <a href="@Url.Action("Index", "products", new {pageSize = 12})" class="btn btn-default btn-sm">
+                                                12
+                                            </a> <a href="@Url.Action("Index", "products", new {pageSize = db.products.Count()})" class="btn btn-default btn-sm">همه</a> products
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-6">
+                                        <div class="products-sort-by">
+                                            <strong>Sort by</strong>
+                                            <select name="sort-by" class="form-control" id="janeshin">
+                                                <option value="1"> قیمت </option>
+                                                <option value="2"> اسم </option>
+                                            </select>
+                                            <a href="@Url.Action("Index", "products", new {sortBy = 2})" class="btn btn-default btn-sm"> اسم </a>
+                                            <a href="@Url.Action("Index", "products", new { sortBy = 1 })" class="btn btn-default btn-sm"> قیمت </a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row products">
+                    @foreach (var item in Model)
+                    {
+                        @*foreach (var item2 in Model.Select(z => z.productImage))
+                            {
+                                <img src="~/saveImages/@" alt=" " class=" img-responsive">
+                            }*@
+
+                        <div class="col-md-4 col-sm-6">
+                            <div class="product">
+                                <div class="flip-container">
+                                    <div class="flipper">
+                                        <div class="front">
+                                            <a href="@Url.Action("Details","products",new{id = item.productID})">
+                                                <img src="~/saveImages/@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Extension"
+                                                     alt=" " class=" img-responsive">
+                                            </a>
+                                        </div>
+                                        <div class="back">
+                                            <a href="@Url.Action("Details","products",new{id = item.productID})">
+                                                <img src="~/saveImages/@db.productImage.Where(z => z.productId == item.productID).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Id@db.productImage.Where(z => z.productId == item.productID).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Extension"
+                                                     alt="" class="img-responsive">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="@Url.Action("Details","products",new{id = item.productID})" class="invisible">
+                                    <img src="~/saveImages/@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Extension"
+                                         alt=" " class=" img-responsive">
+                                </a>
+                                <div class="text">
+                                    <h3>
+                                        <a href="@Url.Action("Details","products",new{id = item.productID})"> @item.name </a>
+                                    </h3>
+                                    <p class="price">
+                                        <del>$280</del> $@item.price
+                                    </p>
+                                    <p class="buttons">
+                                        <a href="@Url.Action("Details","products",new{id = item.productID})" class="btn btn-default"> دیدن جزئیات </a>
+                                        <a href="@Url.Action("OrderNow","ShoppingCart",new{id = item.productID})" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> اضافه کردن به سبد </a>
+                                    </p>
+                                </div>
+                                <!-- /.text -->
+
+                                <div class="ribbon sale">
+                                    <div class="theribbon">SALE</div>
+                                    <div class="ribbon-background"></div>
+                                </div>
+                                <!-- /.ribbon -->
+
+                                <div class="ribbon new">
+                                    <div class="theribbon">NEW</div>
+                                    <div class="ribbon-background"></div>
+                                </div>
+                                <!-- /.ribbon -->
+
+                                <div class="ribbon gift">
+                                    <div class="theribbon">GIFT</div>
+                                    <div class="ribbon-background"></div>
+                                </div>
+                                <!-- /.ribbon -->
+                            </div>
+                            <!-- /.product -->
+                        </div>
+
+                    }
+                </div>
+                <div class="pages">
+
+
+
+                    @Html.PagedListPager(Model, pageNumber => Url.Action("", new { pageNumber }))
+                </div>
+
+
+            </div>
+            <!-- /.col-md-9 -->
+            <div class="col-md-3">
+                <!-- *** MENUS AND FILTERS ***
+                _________________________________________________________ -->
+                <div class="panel panel-default sidebar-menu">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">دسته بندی</h3>
+                    </div>
+
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked category-menu">
+                            <li>
+                                <a href="@Url.Action("typeSelect", "products", new { typeSelected = 2 })">مردانه <span class="badge pull-right">@db.products.Where(z => z.type == 2).Count()</span></a>
+                                <ul>
+                                    @foreach (var item in db.Cats.Where(z => z.TypeId == 2))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("catSelect", "products", new { catSelected = item.CatId })">@item.CatName</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                            <li class="active">
+                                <a href="@Url.Action("typeSelect", "products", new { typeSelected = 1 })">خانم ها  <span class="badge pull-right">@db.products.Where(z => z.type == 1).Count()</span></a>
+                                <ul>
+                                    @foreach (var item in db.Cats.Where(z => z.TypeId == 1))
+                                    {
+                                        <li>
+                                            <a href="@Url.Action("catSelect", "products", new { catSelected = item.CatId })">@item.CatName</a>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </li>
+
+                        </ul>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default sidebar-menu">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Brands <a class="btn btn-xs btn-danger pull-right" href="#"><i class="fa fa-times-circle"></i> Clear</a></h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <form>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">Armani (10)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">Versace (12)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">Carlo Bruni (15)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox">Jack Honey (14)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="panel panel-default sidebar-menu">
+
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Colours <a class="btn btn-xs btn-danger pull-right" href="#"><i class="fa fa-times-circle"></i> Clear</a></h3>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <form>
+                            <div class="form-group">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> <span class="colour white"></span> White (14)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> <span class="colour blue"></span> Blue (10)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> <span class="colour green"></span> Green (20)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> <span class="colour yellow"></span> Yellow (13)
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> <span class="colour red"></span> Red (10)
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-default btn-sm btn-primary"><i class="fa fa-pencil"></i> Apply</button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+                <!-- *** MENUS AND FILTERS END *** -->
+
+                <div class="banner">
+                    <a href="#">
+                        <img src="img/banner.jpg" alt="sales 2014" class="img-responsive">
+                    </a>
+                </div>
+            </div>
+
+            <!-- /.container -->
+        </div>
+        <!-- /#content -->
+    </div>
+</div>

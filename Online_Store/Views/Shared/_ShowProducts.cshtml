@@ -1,0 +1,86 @@
+﻿@using PagedList;
+@using Online_Store.Models;
+@using PagedList.Mvc;
+@using System.Linq;
+
+@model IPagedList<Online_Store.Models.product>
+
+@{
+    ViewBag.Title = "محصولات";
+    product pr = new product();
+    ApplicationDbContext db = new ApplicationDbContext();
+
+}
+<div class="row products">
+    @foreach (var item in Model)
+    {
+        @*foreach (var item2 in Model.Select(z => z.productImage))
+            {
+                <img src="~/saveImages/@" alt=" " class=" img-responsive">
+            }*@
+
+        <div class="col-md-4 col-sm-6">
+            <div class="product">
+                <div class="flip-container">
+                    <div class="flipper">
+                        <div class="front">
+                            <a href="@Url.Action("Details","products",new{id = item.productID})">
+                                <img src="~/saveImages/@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Extension"
+                                     alt=" " class=" img-responsive">
+                            </a>
+                        </div>
+                        <div class="back">
+                            <a href="@Url.Action("Details","products",new{id = item.productID})">
+                                <img src="~/saveImages/@db.productImage.Where(z => z.productId == item.productID).OrderBy(p => p.Id).Skip(1).FirstOrDefault().Id@db.productImage.Where(z => z.productId == item.productID).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Extension"
+                                     alt="" class="img-responsive">
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <a href="@Url.Action("Details","products",new{id = item.productID})" class="invisible">
+                    <img src="~/saveImages/@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Id@db.productImage.Where(x => x.productId == item.productID).FirstOrDefault().Extension"
+                         alt=" " class=" img-responsive">
+                </a>
+                <div class="text">
+                    <h3>
+                        <a href="@Url.Action("Details","products",new{id = item.productID})"> @item.name </a>
+                    </h3>
+                    <p class="price">
+                        <del>$280</del> $@item.price
+                    </p>
+                    <p class="buttons">
+                        <a href="@Url.Action("Details","products",new{id = item.productID})" class="btn btn-default"> دیدن جزئیات </a>
+                        <a href="@Url.Action("OrderNow","ShoppingCart",new{id = item.productID})" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> اضافه کردن به سبد </a>
+                    </p>
+                </div>
+                <!-- /.text -->
+
+                <div class="ribbon sale">
+                    <div class="theribbon">SALE</div>
+                    <div class="ribbon-background"></div>
+                </div>
+                <!-- /.ribbon -->
+
+                <div class="ribbon new">
+                    <div class="theribbon">NEW</div>
+                    <div class="ribbon-background"></div>
+                </div>
+                <!-- /.ribbon -->
+
+                <div class="ribbon gift">
+                    <div class="theribbon">GIFT</div>
+                    <div class="ribbon-background"></div>
+                </div>
+                <!-- /.ribbon -->
+            </div>
+            <!-- /.product -->
+        </div>
+
+    }
+</div>
+<div class="pages">
+
+
+
+    @Html.PagedListPager(Model, pageNumber => Url.Action("", new { pageNumber }))
+</div>

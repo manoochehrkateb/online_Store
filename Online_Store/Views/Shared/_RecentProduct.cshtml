@@ -1,0 +1,70 @@
+﻿@using System.Diagnostics.Eventing.Reader
+@using Online_Store.Models
+@model Online_Store.Models.product
+
+        @{
+            Layout = "_Layout.cshtml";
+            var recentProductList = ViewData["RecentProductList"] as List<RecentProduct>;
+            var img = new productImage();
+            ApplicationDbContext db = new ApplicationDbContext();
+        }
+
+
+
+
+<div id="content">
+    <div class="container">
+        <div class="row same-height-row">
+            <div class="col-md-3 col-sm-6">
+                <div class="box same-height">
+                    <h3>آخرین بازدید شما از کالاهای ما</h3>
+                </div>
+            </div>
+            @if (ViewData["RecentProductList"] as List<RecentProduct> == null)
+            {
+                <h1> شما هنوز از کالایی بازدید نکردید </h1>
+            }
+            else{
+                foreach (var recentProduct in ViewData["RecentProductList"] as List<RecentProduct>)
+            {
+                <div class="col-md-3 col-sm-6">
+                    <div class="product same-height">
+                        <div class="flip-container">
+                            <div class="flipper">
+                                <div class="front">
+                                    <a href="@Url.Action("Details", "products", new {id = recentProduct.ProductId})">
+                                        <img src="/saveImages/@db.productImage.Where(x => x.productId == recentProduct.ProductId).FirstOrDefault().Id@db.productImage.Where(x => x.productId == recentProduct.ProductId).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                    </a>
+                                </div>
+                                <div class="back">
+                                    <a href="@Url.Action("Details", "products", new {id = recentProduct.ProductId})">
+                                        <img src="~/saveImages/@db.productImage.Where(z => z.productId == recentProduct.ProductId).OrderBy(p => p.Id).Skip(1).FirstOrDefault().Id@db.productImage.Where(z => z.productId == recentProduct.ProductId).OrderBy(p => p.FileName).Skip(1).FirstOrDefault().Extension" alt="" class="img-responsive">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="@Url.Action("Details", "products", new {id = recentProduct.ProductId})" class="invisible">
+                            <img src="/saveImages/@db.productImage.Where(x => x.productId == recentProduct.ProductId).FirstOrDefault().Id@db.productImage.Where(x => x.productId == recentProduct.ProductId).FirstOrDefault().Extension" alt="" class="img-responsive">
+                        </a>
+                        <div class="text">
+                            <h3>@recentProduct.ProdutName</h3>
+                            <p class="price">@db.products.Where(z => z.productID == recentProduct.ProductId).FirstOrDefault().price</p>
+                        </div>
+
+                    </div>
+
+                    <!-- /.product -->
+                </div>
+
+            }
+}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+

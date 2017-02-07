@@ -1,0 +1,105 @@
+﻿@model Online_Store.Models.loginAndRegistreVM
+
+
+<div id="content">
+    <div class="container">
+        <div class="text-center">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <h1>عضویت</h1>
+
+                <p class="lead"> میخواهید عضو شوید </p>
+                <p class="text-muted">
+                    براحتی با وارد کردن ایمیل و پسورد خود عضو شوید
+                </p>
+
+                <hr>
+                @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4> عضو جدید </h4>
+                    <hr />
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.reg.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.reg.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.reg.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.reg.Password, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.reg.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.reg.ConfirmPassword, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-user-md"></i> Register</button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="box">
+                <h1>وروود</h1>
+
+                <p class="lead">قبلا عوض شدید ؟</p>
+                <p class="text-muted">
+                    از اینجا میتوانید با وارد کردن ایمیل و پسورد خودتان وارد شوید .
+                </p>
+
+                <hr>
+
+                @using (Html.BeginForm("Login_Impact", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4>ورود کاربران</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.log.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.log.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.log.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.log.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.log.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.log.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.log.RememberMe)
+                                @Html.LabelFor(m => m.log.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> ثتب نام</button>
+                        </div>
+                    </div>
+
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,119 @@
+﻿@using Online_Store.Controllers;
+@using System.Configuration;
+@using Online_Store.Classes;
+@{
+    ViewBag.Title = "Cart";
+}
+
+
+@using (Html.BeginForm("Update", "ShoppingCart", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div id="all">
+
+        <div id="content">
+            <div class="container">
+
+                <div class="col-md-12" dir="rtl">
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="@Url.Action("Index", "Home")">خانه</a>
+                        </li>
+                        <li>خرید</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-9" id="basket">
+
+                    <div class="box">
+
+
+
+
+                        <h1>Shopping cart</h1>
+                        <p class="text-muted" id="update-message">
+                            @*@for (int i = 0; i < Model.CartItems.Count; i++)
+                            {
+
+                                @Html.ValidationMessageFor(model => model.CartItems[i].Count)
+
+                            }*@
+                        </p>
+                        <div class="table-responsive" dir="rtl">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">محصول</th>
+                                        <th>مقدار</th>
+                                        <th>قیمت هر واحد</th>
+                                        <th>تخفیف</th>
+                                        <th colspan="2">مجموع</th>
+                                    </tr>
+                                </thead>
+
+                                @{
+                                    decimal s = 0;
+                                    int index = 1;
+                                }
+                                @foreach (Item item in (List<Item>)Session["cart"])
+                                {
+                                    s = s + item.Pr.price * item.Quantity;
+                                    <tbody>
+                                        <tr>
+                                            <td id="pic">
+                                                <a href="#">
+                                                    <img src="@item.Pr.name" alt="@item.Pr.name">
+                                                    @item.Pr.productID
+                                                </a>
+                                            </td>
+                                            <td> @item.Pr.name </td>
+                                            <td> <input type="text" name="quantity" value="@item.Quantity " /> </td>
+                                            <td> @item.Pr.price </td>
+                                            <td> 0 </td>
+                                            <td> @(item.Pr.price * item.Quantity) </td>
+                                            <td>
+                                                @*<a href="#" class="RefreshQuantity" id="update-clic" data-id="@item.RecordId"
+                                                   txt-id="CartItems_@(ix)__Count">
+                                                    محاسبه ی جمع مقدارها<i class="fa fa-refresh"></i>
+                                                </a>&nbsp;|&nbsp;*@
+                                                @Html.ActionLink("Delete", "Delete", "ShoppingCart", new { id = item.Pr.productID }, new { @class = "fa fa-trash-o" })
+                                            </td>
+                                            @( index++)
+                                        </tr>
+
+                                    </tbody>
+                                }
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="5">مجموع :</th>
+                                        <th colspan="2" id="cart-total">
+                                            @*@Model.CartTotal*@
+                                            @s
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+
+                        </div>
+                        <!-- /.table-responsive -->
+
+                        <div class="box-footer">
+                            <div class="pull-left">
+                                <a href="category.html" class="btn btn-default"><i class="fa fa-chevron-left"></i> Continue shopping</a>
+                            </div>
+                            <div class="pull-right">
+
+                                <button type="submit" class="btn btn-default"><i class="fa fa-refresh"></i> Update basket</button>
+                                <button type="submit" class="btn btn-primary">
+                                    Proceed to checkout <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                </div>
+                }
+                }

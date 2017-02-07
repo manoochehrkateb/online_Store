@@ -1,0 +1,155 @@
+﻿@using Online_Store.Models
+@model Online_Store.Models.DevliveryMethod
+@{
+    ViewBag.Title = "ارسال";
+
+
+}
+
+<h2>Delivery</h2>
+
+@using (Html.BeginForm("Delivery", "ShoppingCart", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new {@class = "text-danger"})
+    <div id="content">
+        <div class="container">
+
+            <div class="col-md-12">
+                <ul class="breadcrumb">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li>پرداخت - روش ارسال </li>
+                </ul>
+            </div>
+
+            <div class="col-md-9" id="checkout">
+
+                <div class="box">
+
+                    <h1>پرداخت - روش ارسال</h1>
+                    <ul class="nav nav-pills nav-justified">
+                        <li>
+                            <a href="checkout1.html"><i class="fa fa-map-marker"></i><br>آدرس</a>
+                        </li>
+                        <li class="active">
+                            <a href="#"><i class="fa fa-truck"></i><br>روش ارسال</a>
+                        </li>
+                        <li class="disabled">
+                            <a href="#"><i class="fa fa-money"></i><br>روش پرداخت</a>
+                        </li>
+                        <li class="disabled">
+                            <a href="#"><i class="fa fa-eye"></i><br>خلاصه پرداخت</a>
+                        </li>
+                    </ul>
+
+                    <div class="content">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="box shipping-method">
+
+                                    <h4>پیک</h4>
+
+                                    <p>برای مشتریان تهرانی.</p>
+
+                                    <div class="box-footer text-center">
+                                        @Html.RadioButtonFor(model => model.DeliveryEnum, Delivery.peyk)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="box shipping-method">
+
+                                    <h4>پست پیشتاز</h4>
+
+                                    <p>برای اقسا نقاط ایران با بیشترین سرعت ممکن</p>
+
+                                    <div class="box-footer text-center">
+                                    @*@Html.RadioButtonFor(model => model.DeliveryEnum == Delivery.pishtaz, Model.DeliveryEnum == Delivery.pishtaz)<br/>*@
+                                        @Html.RadioButtonFor(model=>model.DeliveryEnum,Delivery.pishtaz)
+                                        
+                                        @*<input type="radio" name="delivery2" value="@Delivery.pishtaz">*@
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="box shipping-method">
+
+                                    <h4>پست معمولی</h4>
+
+                                    <p>با کمترین هزینه برای تمام ایران.</p>
+
+                                    <div class="box-footer text-center">
+
+                                        @Html.RadioButtonFor(model => model.DeliveryEnum, Delivery.post)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row -->
+                        @Html.HiddenFor(model => model.OrderId)
+                    </div>
+                    <!-- /.content -->
+
+                    <div class="box-footer">
+                        <div class="pull-left">
+                            <a href="basket.html" class="btn btn-default"><i class="fa fa-chevron-left"></i>برگشت به مشخصات</a>
+                        </div>
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-primary">
+                                روش پرداخت<i class="fa fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.box -->
+
+
+            </div>
+            <!-- /.col-md-9 -->
+
+            <div class="col-md-3">
+
+
+                <div class="box" id="order-summary">
+                    <div class="box-header">
+                        <h3>خلاصه پرداخت</h3>
+                    </div>
+                    <p class="text-muted">ارسال و بقیه چیزها حساب میشود</p>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <tbody>
+                            <tr>
+                                <td>مجوعه سفارش</td>
+                                <th>(در دست ساخت)</th>
+                            </tr>
+                            <tr>
+                                <td>ارسال</td>
+                                <th>0</th>
+                            </tr>
+                            <tr>
+                                <td>مالیات</td>
+                                <th>$0.00</th>
+                            </tr>
+                            <tr class="total">
+                                <td>Total</td>
+                                <th>@Session["janeshin"]</th>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /.col-md-3 -->
+
+        </div>
+        <!-- /.container -->
+    </div>
+    <!-- /#content -->
+}

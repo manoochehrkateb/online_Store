@@ -1,0 +1,212 @@
+﻿@model Online_Store.Models.Order
+
+@{
+    ViewBag.Title = "ثبت خرید";
+}
+
+<h2>Proceed</h2>
+
+@using (Html.BeginForm("Proceed", "ShoppingCart", FormMethod.Post)) 
+{
+    @Html.AntiForgeryToken()
+   
+
+        <div id="content">
+            <div class="container">
+
+                <div class="col-md-12">
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">خانه</a>
+                        </li>
+                        <li>پرداخت آدرس</li>
+                    </ul>
+                </div>
+
+                <div class="col-md-9" id="checkout">
+
+                    <div class="box">
+
+                        <h1>پرداخت</h1>
+                        <ul class="nav nav-pills nav-justified">
+                            <li class="active">
+                                <a href="#"><i class="fa fa-map-marker"></i><br>مشخصات</a>
+                            </li>
+                            <li class="disabled">
+                                <a href="#"><i class="fa fa-truck"></i><br>روش ارسال</a>
+                            </li>
+                            <li class="disabled">
+                                <a href="#"><i class="fa fa-money"></i><br>روش پرداخت</a>
+                            </li>
+                            <li class="disabled">
+                                <a href="#"><i class="fa fa-eye"></i><br>تایید نهایی</a>
+                            </li>
+                        </ul>
+                        <div class="text-muted">@Html.ValidationSummary(true, "", new { @class = "text-danger" })</div>
+                        <div class="content">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Username, "نام کاربری")
+
+                                        @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.FirstName,"نام")
+                                       
+                                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.LastName, "نام خانوادگی")
+
+                                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Email, "ایمیل شما")
+
+                                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.row -->
+
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    @Html.LabelFor(model => model.State, "استان")
+
+                                    @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.City, "شهر")
+
+                                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.PostalCode, "کد پستی")
+
+                                        @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Phone, "تلفن")
+
+                                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Address, "آدرس دقیق")
+
+                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    @{
+                                        //Int64 janeshin = Convert.ToInt64(Model.Total);
+                                        //var janeshinekhar = Model.Total;
+                                    }
+                                </div>
+                                <!-- /.row -->
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="text">
+
+                                        @*@Html.LabelFor(model => model.Total, "fucke jadid")*@
+                                        @*@Html.EditorFor(model => model.Total, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        @*@Html.HiddenFor(model => model.Total, new { htmlAttributes = new { @class = "form-control"} })*@
+                                        @*<input type="te" name="name" value=" " />/>
+                                        <input id="Total" name="Total" type="hidden" value="243.00" />*@
+                                        @Html.ValidationMessageFor(model => model.Total, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                    </div>
+                                    <!-- /.row -->
+                                </div>
+
+                                <div class="box-footer">
+                                    <div class="pull-left">
+                                        <a href="basket.html" class="btn btn-default"><i class="fa fa-chevron-left"></i>برگشت به سبد خرید</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">
+                                            روش ارسال<i class="fa fa-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                    <!-- /.box -->
+
+
+                </div>
+                <!-- /.col-md-9 -->
+
+                <div class="col-md-3">
+
+                    <div class="box" id="order-summary">
+                        <div class="box-header">
+                            <h3>خلاصه پرداخت</h3>
+                        </div>
+                        <p class="text-muted">ارسال و بقیه چیزها حساب میشود.</p>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <td>مجموعه سفارش</td>
+                                        <th>در دست ساخت</th>
+                                    </tr>
+                                    <tr>
+                                        <td>ارسال</td>
+                                        <th>در دست ساخت</th>
+                                    </tr>
+                                    <tr>
+                                        <td>مالیات</td>
+                                        <th>$0.00</th>
+                                    </tr>
+                                    <tr class="total">
+                                        <td>مجموع خرید</td>
+                                        <th>
+                                            @Session["janeshin"]
+                                            @*@Html.ViewBag.UserTotalPurshes*@
+                                            @*@Html.ValueForModel("Model.Total")*@
+                                            @*@{
+                                        var janeshinekhar = ViewBag.UserTotalPurshes;
+                                        Model.Total = janeshinekhar;
+                                    }*@
+                                            @*@Model.Total*@
+                                            <input type="text" name="name" value="@Model.Total" hidden="hidden" />
+                                        </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.col-md-3 -->
+            </div>
+            </div>
+            <!-- /.container -->
+
+}

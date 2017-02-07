@@ -1,0 +1,105 @@
+﻿@using Online_Store.Models
+@model loginAndRegistreVM
+@using Microsoft.AspNet.Identity
+<div class="col-md-8" data-animate="fadeInDown" dir="rtl">
+    <ul class="menu">
+
+        @if (Request.IsAuthenticated)
+        {
+            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-left" }))
+            {
+                @Html.AntiForgeryToken()
+
+
+                <li>
+                    @Html.ActionLink("سلام " + User.Identity.GetUserName() + "!", "Index", "Manage",
+                        routeValues: null, htmlAttributes: new { title = "Manage" })
+                </li>
+                <li><a href="javascript:document.getElementById('logoutForm').submit()">خروج</a></li>
+
+            }
+        }
+        else
+        {
+
+            <li>
+
+                <a href="#" data-toggle="modal" data-target="#login-modal"> وروود </a>
+            </li>
+            <li>
+                <a href="@Url.Action("Register", "Account")">عضویت</a>
+            </li>
+
+
+        }
+
+
+        <li>
+            <a href="contact.html">ارتباط با ما</a>
+        </li>
+        <li>
+            <a href="@Url.Action("Recentview", "products")">آخرین کالاهای بازدید شده</a>
+        </li>
+    </ul>
+</div>
+
+<div class="modal fade" id="login-modal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="Login">وروود کاربران</h4>
+            </div>
+            <div class="modal-body">
+                <section id="loginForm">
+                    @using (Html.BeginForm("Login_Impact", "Account", new { ReturnUrl = ViewBag.ReturnUrl },
+                        FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.log.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.log.Email, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.log.Email, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.log.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.log.Password, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(m => m.log.Password, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <div class="checkbox">
+                                    @Html.CheckBoxFor(m => m.log.RememberMe)
+                                    @Html.LabelFor(m => m.log.RememberMe)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" value="Log in" class="btn btn-default" />
+                            </div>
+                        </div>
+
+
+                    }
+
+                    <p class="text-center text-muted">
+                        هنوز عضو نشدید ؟ @Html.ActionLink("از همین لینک خیلی راحت عضو شوید",
+                            "Register", "Account",
+                                        routeValues: null, htmlAttributes: new { id = "registerLink" })
+
+                    </p>
+                    <p class="text-center text-muted">
+                        @Html.ActionLink("رمز ورود رو فراموش کردید ؟", "ForgotPassword")
+
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
